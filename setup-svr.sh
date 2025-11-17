@@ -5,9 +5,9 @@ echo "   SETUP SERVER - MODE INTERAKTIF"
 echo "========================================"
 
 # --- INPUT USER ---
-read -p "Masukkan nama domain : " DOMAIN
-read -p "Masukkan nama user Linux : " USERNAME
-read -p "Masukkan port SSH baru : " SSHPORT
+read -p "Masukkan nama domain (misal: pkk.penajamkab.go.id): " DOMAIN
+read -p "Masukkan nama user Linux (misal: pkk): " USERNAME
+read -p "Masukkan port SSH baru (misal: 2110): " SSHPORT
 
 WEBROOT="/home/$USERNAME/public_html"
 
@@ -57,7 +57,14 @@ a2enmod rewrite proxy_fcgi setenvif
 
 echo "=== Creating web directory ==="
 mkdir -p $WEBROOT
+
+echo "=== Downloading maintenance page ==="
+wget -O $WEBROOT/index.html https://raw.githubusercontent.com/Zerstravorsch/bg_mt/refs/heads/main/index.html
+
+# Tambahkan phpinfo sebagai info tambahan
 echo "<?php phpinfo();" > $WEBROOT/info.php
+
+# Set owner dan permission
 chown -R $USERNAME:$USERNAME /home/$USERNAME
 chmod -R 755 /home/$USERNAME
 
